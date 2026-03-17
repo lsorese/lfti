@@ -1,58 +1,67 @@
-/* prism theme adjustments */
+/* prism theme — earthy terminal */
 
 .notion-code {
-  background-color: rgba(249, 250, 251, 1);
-  border: 1px solid rgba(229, 231, 235, 1);
-  border-radius: 0.375rem;
+  background-color: #1a1410;
+  border: 1px solid #2e2419;
+  border-radius: 0;
   padding: 1.5em !important;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .dark-mode .notion-code {
-  background-color: rgba(17, 24, 39, 1);
-  border-color: rgba(55, 65, 81, 1);
+  background-color: #0f0c08;
+  border-color: #2e2419;
 }
+
 .notion code {
-  color: rgba(31, 41, 55, 1);
+  color: #3b2f20;
   border: 0 none !important;
   box-shadow: none !important;
   background: none !important;
   padding: 0 !important;
 }
+
 .dark-mode .notion code {
-  color: rgba(229, 231, 235, 1);
+  color: #d4c4a8;
 }
 
 .dark-mode .notion .notion-inline-code {
-  background: rgb(71, 76, 80) !important;
-  color: #ff4081;
+  background: #2e2419 !important;
+  color: #c8a050;
   padding: 0.2em 0.4em !important;
 }
 
 .notion .notion-inline-code {
-  color: #ff4081;
-  background: rgba(127, 122, 107, 0.1) !important;
+  color: #8b6914;
+  background: rgba(139, 105, 20, 0.1) !important;
   padding: 0.2em 0.4em !important;
 }
 
 .token.cdata,
 .token.doctype,
 .token.prolog {
-  color: rgba(55, 65, 81, 1);
+  color: #7a6e5c;
 }
+
 .token.comment {
-  color: #5b9b4c;
+  color: #6b7c54;
 }
+
 .dark-mode .token.cdata,
 .dark-mode .token.doctype,
 .dark-mode .token.prolog {
-  color: rgba(209, 213, 219, 1);
+  color: #8a7e6c;
 }
+
 .token.punctuation {
-  color: rgba(55, 65, 81, 1);
+  color: #5c4e3c;
 }
+
 .dark-mode .token.punctuation {
-  color: rgba(209, 213, 219, 1);
+  color: #a09080;
 }
+
 .token.boolean,
 .token.constant,
 .token.deleted,
@@ -60,52 +69,62 @@
 .token.property,
 .token.symbol,
 .token.tag {
-  color: rgba(16, 185, 129, 1);
+  color: #6b8c4e;
 }
+
 .token.attr-name,
 .token.builtin,
 .token.char,
 .token.inserted,
 .token.selector,
 .token.string {
-  color: rgba(139, 92, 246, 1);
+  color: #a07d2e;
 }
+
 .language-css .token.string,
 .style .token.string,
 .token.entity,
 .token.operator,
 .token.url {
-  color: rgba(245, 158, 11, 1);
+  color: #b8860b;
 }
+
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-  color: rgba(59, 130, 246, 1);
+  color: #7a6240;
 }
+
 .token.class-name,
 .token.function {
-  color: rgba(236, 72, 153, 1);
+  color: #9c6b30;
 }
+
 .token.important,
 .token.regex,
 .token.variable {
-  color: rgba(245, 158, 11, 1);
+  color: #b8860b;
 }
+
 code[class*='language-'],
 pre[class*='language-'] {
-  color: rgba(31, 41, 55, 1);
+  color: #3b2f20;
 }
+
 .dark-mode code[class*='language-'],
 .dark-mode pre[class*='language-'] {
-  color: rgba(249, 250, 251, 1);
+  color: #d4c4a8;
 }
+
 pre::-webkit-scrollbar {
   display: none;
 }
+
 pre {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .token.operator,
 .token.entity,
 .token.url,

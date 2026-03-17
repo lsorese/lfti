@@ -15,13 +15,11 @@
   align-items: center;
   padding: 2vmin;
 
-  font-size: 16px;
-  line-height: 1.5;
-  color: rgb(55, 53, 47);
-  caret-color: rgb(55, 53, 47);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--fg-color, #3b2f20);
+  caret-color: var(--fg-color, #3b2f20);
+  font-family: 'Space Mono', monospace;
   background-color: var(--bg-color);
 }
 
@@ -30,7 +28,7 @@
   display: block;
   width: 24px;
   height: 24px;
-  color: rgba(55, 53, 47, 0.4);
+  color: var(--fg-color-2, rgba(59, 47, 32, 0.4));
 }
 
 .main {
@@ -50,7 +48,6 @@
   max-width: 1100px;
   margin: auto auto 0;
   padding: 8px;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -58,8 +55,9 @@
 }
 
 .copyright {
-  font-size: 80%;
+  font-size: 12px;
   padding: 0.5em;
+  opacity: 0.6;
 }
 
 .settings,
@@ -90,35 +88,35 @@
 }
 
 .toggleDarkMode:hover {
-  color: #2795e9;
+  color: #8b6914;
 }
 
 .twitter:hover {
-  color: #2795e9;
+  color: #8b6914;
 }
 
 .mastodon:hover {
-  color: #5a4be1;
+  color: #8b6914;
 }
 
 .zhihu:hover {
-  color: #0066ff;
+  color: #8b6914;
 }
 
 .github:hover {
-  color: #c9510c;
+  color: #8b6914;
 }
 
 .youtube:hover {
-  color: #ff0000;
+  color: #8b6914;
 }
 
 .linkedin:hover {
-  color: #0077b5;
+  color: #8b6914;
 }
 
 .newsletter:hover {
-  color: #777777;
+  color: #8b6914;
 }
 
 .comments {
@@ -160,7 +158,7 @@
   display: inline-flex;
   padding: 12px;
   margin-right: 1vw;
-  border-radius: 50%;
+  border-radius: 0;
   background: transparent;
   transition: all 250ms ease-out;
 }
@@ -174,13 +172,13 @@
 }
 
 .likeTweet:hover {
-  background: #f6e3e8;
-  color: #e0265e;
+  background: #2e2419;
+  color: #c8a050;
 }
 
 .retweet:hover {
-  color: #19bf64;
-  background: #e5f2e8;
+  color: #6b8c4e;
+  background: #2e2419;
 }
 
 @media (max-width: 1360px) {
@@ -220,4 +218,55 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.backButton {
+  position: fixed;
+  top: 12px;
+  left: 16px;
+  z-index: 100;
+  font-size: 13px;
+  font-family: 'Space Mono', monospace;
+  background: var(--bg-color, #1a1410);
+  padding: 6px 10px;
+}
+
+.backButton a {
+  color: var(--fg-color, #d4c4a8);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 150ms ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.backButton a:hover {
+  opacity: 1;
+}
+
+.backFace {
+  height: 20px;
+  width: auto;
+}
+
+@media (max-width: 720px) {
+  .backButton {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: flex;
+    justify-content: center;
+    padding: 16px 0 8px;
+  }
+
+  .backFace {
+    height: 28px;
+  }
+}
+
+/* notion overrides for terminal feel */
+.notion {
+  font-size: 14px;
+  line-height: 1.4;
 }

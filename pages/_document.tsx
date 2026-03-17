@@ -7,6 +7,10 @@ export default class MyDocument extends Document {
         <Head>
           <link rel='shortcut icon' href='/favicon.ico' />
           <link rel='icon' type='image/png' sizes='32x32' href='favicon.png' />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap'
+            rel='stylesheet'
+          />
 
           <link rel='manifest' href='/manifest.json' />
         </Head>
