@@ -130,3 +130,6 @@ feat: clone loganfromtheinter.net into nextjs-notion-starter-kit
 {"id":"event-000023","type":"tool.edit","ts":"2026-03-22T02:08:19Z","state":"stopped","data":{"file_path":"/Users/logan/Documents/lfti/public/manifest.json"}}
 {"id":"event-000024","type":"tool.edit","ts":"2026-03-22T02:08:26Z","state":"stopped","data":{"file_path":"/Users/logan/Documents/lfti/components/PageHead.tsx"}}
 {"id":"event-000025","type":"tool.edit","ts":"2026-03-22T02:08:36Z","state":"stopped","data":{"file_path":"/Users/logan/Documents/lfti/styles/notion.css"}}
+{"id":"event-000026","type":"tool.bash","ts":"2026-03-22T02:11:26Z","state":"stopped","data":{"command":"grep -rn 'PageIcon\|pageIcon\|page-icon-hero' /Users/logan/Documents/lfti/node_modules/react-notion-x/src/ --include="*.tsx" | head -20"}}
+{"id":"event-000027","type":"tool.bash","ts":"2026-03-22T02:11:31Z","state":"stopped","data":{"command":"grep -rn 'PageIcon\|pageIcon\|page-icon-hero' /Users/logan/Documents/lfti/node_modules/react-notion-x/build/ --include="*.js" | head -20"}}
+{"id":"event-000028","type":"tool.edit","ts":"2026-03-22T02:11:39Z","state":"stopped","data":{"file_path":"/Users/logan/Documents/lfti/components/NotionPage.tsx"}}

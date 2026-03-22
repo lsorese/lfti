@@ -208,6 +208,7 @@ export function NotionPage({
       Modal,
       Tweet,
       Header: () => null,
+      PageIcon: () => null,
       propertyLastEditedTimeValue,
       propertyTextValue,
       propertyDateValue
