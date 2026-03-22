@@ -35,19 +35,16 @@ export function PageHead({
         content='width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover'
       />
 
-      <meta name='mobile-web-app-capable' content='yes' />
-      <meta name='apple-mobile-web-app-status-bar-style' content='black' />
-
       <meta
         name='theme-color'
         media='(prefers-color-scheme: light)'
-        content='#fefffe'
+        content='#f5f0e8'
         key='theme-color-light'
       />
       <meta
         name='theme-color'
         media='(prefers-color-scheme: dark)'
-        content='#2d3439'
+        content='#1a1410'
         key='theme-color-dark'
       />
 

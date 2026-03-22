@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-17T01:26:20Z",
-  "changed_file": "components/NotionPage.tsx",
+  "timestamp": "2026-03-22T02:08:26Z",
+  "changed_file": "components/PageHead.tsx",
   "test_command": "npm test",
   "related_test": "",
   "recommendation": "テストの実行を推奨します"

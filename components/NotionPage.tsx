@@ -308,14 +308,6 @@ export function NotionPage({
       {isLiteMode && <BodyClassName className='notion-lite' />}
       {isDarkMode && <BodyClassName className='dark-mode' />}
 
-      {pageId !== site.rootNotionPageId && (
-        <div className={styles.backButton}>
-          <Link href='/'>
-            <img src='/face.png' alt='' className={styles.backFace} />
-          </Link>
-        </div>
-      )}
-
       <NotionRenderer
         bodyClassName={cs(
           styles.notion,
