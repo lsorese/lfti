@@ -1,0 +1,10 @@
+{"type":"session.start","ts":"2026-03-17T00:55:44Z","state":"initialized","data":{"cc_session_id":"5490f8a1-157b-4325-bcfe-2c53010b9cff"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-17T00:55:44Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-17T00:57:53Z","state":"initialized","data":{"command":"find /Users/logan/Documents/lfti -type f -name "package.json" -o -name "next.config.*" -o -name ".env*" -o -name "tsconfig.json" -o -name "README*" | head -20"}}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-17T00:57:57Z","state":"initialized","data":{"command":"ls -la /Users/logan/Documents/lfti/ | grep -E "^\." | head -20"}}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-17T00:58:00Z","state":"initialized","data":{"command":"find /Users/logan/Documents/lfti -type d -maxdepth 2 | grep -v node_modules | sort"}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-17T00:58:02Z","state":"initialized","data":{"command":"find /Users/logan/Documents/lfti/pages -type f -name "*.ts" -o -name "*.tsx" | head -30"}}
+{"id":"event-000006","type":"tool.bash","ts":"2026-03-17T00:58:03Z","state":"initialized","data":{"command":"find /Users/logan/Documents/lfti/components -type f -name "*.ts" -o -name "*.tsx" | sort"}}
+{"id":"event-000007","type":"tool.bash","ts":"2026-03-17T00:58:04Z","state":"initialized","data":{"command":"find /Users/logan/Documents/lfti/lib -type f -name "*.ts" -o -name "*.tsx" | sort"}}
+{"id":"event-000008","type":"tool.bash","ts":"2026-03-17T00:58:22Z","state":"initialized","data":{"command":"find /Users/logan/Documents/lfti/pages/api -type f | sort"}}
+{"id":"event-000009","type":"session.stop","ts":"2026-03-17T00:59:19Z","state":"stopped"}

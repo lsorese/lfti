@@ -1,0 +1,34 @@
+{
+  "session_id": "0939BEC1-23E5-456E-A353-1BC99D5F63B0",
+  "parent_session_id": null,
+  "state": "initialized",
+  "state_version": 1,
+  "started_at": "2026-03-22T01:48:37Z",
+  "updated_at": "2026-03-22T01:51:37Z",
+  "resume_token": "0FB77B50-E69A-467D-A918-67AB83F25D3F",
+  "event_seq": 14,
+  "last_event_id": "event-000014",
+  "fork_count": 0,
+  "orchestration": {
+    "max_state_retries": 3,
+    "retry_backoff_seconds": 10
+  },
+  "cwd": "/Users/logan/documents/lfti",
+  "project_name": "lfti",
+  "prompt_seq": 1,
+  "git": {
+    "branch": "main",
+    "uncommitted_changes": 5,
+    "last_commit": "3e9d32a"
+  },
+  "plans": {
+    "exists": false,
+    "last_modified": 0,
+    "wip_tasks": 0,
+    "todo_tasks": 0,
+    "pending_tasks": 0,
+    "completed_tasks": 0
+  },
+  "changes_this_session": [],
+  "intent": "literal"
+}
