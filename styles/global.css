@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  --notion-font: 'Space Mono', monospace;
+  --notion-font: var(--font-space-mono), 'Space Mono', monospace;
   font-family: var(--notion-font);
   overflow-x: hidden;
   letter-spacing: -0.01em;

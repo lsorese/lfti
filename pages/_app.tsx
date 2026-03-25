@@ -15,6 +15,7 @@ import 'styles/prism-theme.css'
 
 import type { AppProps } from 'next/app'
 import * as Fathom from 'fathom-client'
+import { Space_Mono } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { posthog } from 'posthog-js'
 import * as React from 'react'
@@ -27,6 +28,14 @@ import {
   posthogConfig,
   posthogId
 } from '@/lib/config'
+
+const spaceMono = Space_Mono({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-space-mono'
+})
 
 if (!isServer) {
   bootstrap()
@@ -61,5 +70,9 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  return <Component {...pageProps} />
+  return (
+    <div className={spaceMono.variable}>
+      <Component {...pageProps} />
+    </div>
+  )
 }
