@@ -42,8 +42,32 @@ const getNavigationLinkPages = pMemoize(
   }
 )
 
+async function fetchPageWithRetry(
+  pageId: string,
+  retries = 3,
+  delay = 5000
+): Promise<ExtendedRecordMap> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await notion.getPage(pageId)
+    } catch (err: any) {
+      const is429 = err?.message?.includes('429') || err?.status === 429
+      if (is429 && i < retries - 1) {
+        const backoff = delay * Math.pow(2, i)
+        console.warn(
+          `Rate limited fetching page "${pageId}", retrying in ${backoff}ms (attempt ${i + 1}/${retries})`
+        )
+        await new Promise((resolve) => setTimeout(resolve, backoff))
+      } else {
+        throw err
+      }
+    }
+  }
+  throw new Error(`Failed to fetch page "${pageId}" after ${retries} retries`)
+}
+
 export async function getPage(pageId: string): Promise<ExtendedRecordMap> {
-  let recordMap = await notion.getPage(pageId)
+  let recordMap = await fetchPageWithRetry(pageId)
 
   if (navigationStyle !== 'default') {
     // ensure that any pages linked to in the custom navigation header have
