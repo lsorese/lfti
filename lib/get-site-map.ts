@@ -32,12 +32,30 @@ const getAllPages = pMemoize(getAllPagesImpl, {
 
 const getPage = async (pageId: string, opts?: any) => {
   console.log('\nnotion getPage', uuidToId(pageId))
-  return notion.getPage(pageId, {
-    kyOptions: {
-      timeout: 30_000
-    },
-    ...opts
-  })
+
+  const maxRetries = 3
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await notion.getPage(pageId, {
+        kyOptions: {
+          timeout: 30_000
+        },
+        ...opts
+      })
+    } catch (err: any) {
+      const is429 = err?.message?.includes('429') || err?.statusCode === 429
+      if (is429 && i < maxRetries - 1) {
+        const backoff = 5000 * Math.pow(2, i)
+        console.warn(
+          `Rate limited fetching page "${uuidToId(pageId)}", retrying in ${backoff}ms (attempt ${i + 1}/${maxRetries})`
+        )
+        await new Promise((resolve) => setTimeout(resolve, backoff))
+      } else {
+        throw err
+      }
+    }
+  }
+  throw new Error(`Failed to fetch page "${uuidToId(pageId)}" after ${maxRetries} retries`)
 }
 
 async function getAllPagesImpl(
@@ -62,7 +80,8 @@ async function getAllPagesImpl(
     (map: Record<string, string>, pageId: string) => {
       const recordMap = pageMap[pageId]
       if (!recordMap) {
-        throw new Error(`Error loading page "${pageId}"`)
+        console.warn(`Skipping page "${pageId}" (failed to load)`)
+        return map
       }
 
       const block = getBlockValue(recordMap.block[pageId])
