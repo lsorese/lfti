@@ -44,8 +44,8 @@ const getNavigationLinkPages = pMemoize(
 
 async function fetchPageWithRetry(
   pageId: string,
-  retries = 3,
-  delay = 5000
+  retries = 5,
+  delay = 10000
 ): Promise<ExtendedRecordMap> {
   for (let i = 0; i < retries; i++) {
     try {
