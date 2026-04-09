@@ -430,17 +430,17 @@ const CSS = `
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #1a1410;
-  --bg-secondary: #261e15;
-  --fg: #e0d5c0;
-  --fg-muted: rgba(224,213,192,0.6);
-  --fg-subtle: rgba(224,213,192,0.18);
-  --accent: #c9a84c;
-  --accent-hover: #dfc06a;
-  --code-bg: #0f0c08;
-  --code-border: #2e2419;
-  --code-fg: #e0d5c0;
-  --header-bg: rgba(26,20,16,0.95);
+  --bg: #1c1508;
+  --bg-secondary: #2a1f0e;
+  --fg: #d9c9a0;
+  --fg-muted: rgba(217,201,160,0.6);
+  --fg-subtle: rgba(217,201,160,0.15);
+  --accent: #c4982e;
+  --accent-hover: #dab445;
+  --code-bg: #120e04;
+  --code-border: #332710;
+  --code-fg: #d9c9a0;
+  --header-bg: rgba(28,21,8,0.95);
 }
 
 a { color: inherit; text-decoration: none; }
@@ -651,9 +651,8 @@ img.index-hero-img {
 .entry time { font-size: 12px; color: var(--fg-muted); display: block; margin-top: 2px; }
 
 /* entries list (no covers) */
-.entries-list { margin-top: 2em; list-style: none; padding: 0; }
-.entries-list li { padding: 8px 0; border-bottom: 1px solid var(--fg-subtle); }
-.entries-list li:last-child { border-bottom: none; }
+.entries-list { margin-top: 1em; list-style: none; padding: 0; }
+.entries-list li { padding: 4px 0; }
 .entries-list a { font-weight: 700; }
 .entries-list a:hover { color: var(--accent); }
 .entries-list time { font-size: 12px; color: var(--fg-muted); margin-left: 12px; }
