@@ -508,7 +508,7 @@ nav a {
 nav a:hover { color: var(--fg); }
 
 /* hero image on index */
-img.index-hero-img {
+.content img.index-hero-img {
   max-width: 400px;
   width: 100%;
   height: auto;
@@ -654,7 +654,7 @@ img.index-hero-img {
 .entry time { font-size: 12px; color: var(--fg-muted); display: block; margin-top: 2px; }
 
 /* entries list (no covers) */
-.entries-list { margin-top: 1em; list-style: none; padding: 0; }
+.content .entries-list { margin-top: 1em; list-style: none; padding: 0; }
 .entries-list li { padding: 4px 0; }
 .entries-list a { font-weight: 700; }
 .entries-list a:hover { color: var(--accent); }
