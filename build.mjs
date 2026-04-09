@@ -509,7 +509,10 @@ nav a:hover { color: var(--fg); }
 
 /* hero image on index */
 img.index-hero-img {
-  max-width: 400px !important;
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 256 / 182;
   margin: 0 auto 1em;
   display: block;
 }
@@ -1000,7 +1003,7 @@ async function build() {
       if (imgUrl) {
         const localImg = await downloadImage(imgUrl)
         indexContent += `<h1 class="index-title">Logan, from the Internet.</h1>\n`
-        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img">\n`
+        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img" width="256" height="182">\n`
       }
       continue
     }
