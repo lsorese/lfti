@@ -1,0 +1,7 @@
+{
+  "buildCommand": "node --env-file=.env build.mjs",
+  "outputDirectory": "out",
+  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false
+}
