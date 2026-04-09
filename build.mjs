@@ -496,7 +496,7 @@ header {
 main {
   max-width: 600px;
   margin: 0 auto;
-  padding: 32px 16px calc(max(5vh, 32px));
+  padding: 32px 20px calc(max(5vh, 32px));
 }
 main.index-page { max-width: 600px; }
 
