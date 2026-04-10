@@ -456,7 +456,7 @@ function htmlTemplate(
           if (e.coverLocal) {
             return `<div class="relative overflow-hidden group">
               <a href="/${e.slug}.html" class="block w-full pb-[100%] relative overflow-hidden">
-                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110">
+                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110 !m-0">
               </a>
             </div>`
           }
@@ -693,7 +693,7 @@ async function build() {
           for (const e of withCovers) {
             indexContent += `<div class="relative overflow-hidden group">
               <a href="/${e.slug}.html" class="block w-full pb-[100%] relative overflow-hidden">
-                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110">
+                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110 !m-0">
               </a>
             </div>\n`
           }
