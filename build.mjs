@@ -432,8 +432,6 @@ const CSS = `
 @font-face { font-family: 'Space Mono'; font-style: italic; font-weight: 400; font-display: swap; src: url(/fonts/space-mono-regular-italic.woff2) format('woff2'); }
 @font-face { font-family: 'Space Mono'; font-style: normal; font-weight: 700; font-display: swap; src: url(/fonts/space-mono-bold.woff2) format('woff2'); }
 @font-face { font-family: 'Space Mono'; font-style: italic; font-weight: 700; font-display: swap; src: url(/fonts/space-mono-bold-italic.woff2) format('woff2'); }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-a { color: inherit; text-decoration: none; }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; background: #1c1508; }
 ::-webkit-scrollbar-thumb { background: rgba(217,201,160,0.15); border-radius: 2px; }
@@ -540,7 +538,7 @@ function htmlTemplate(
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
-  <style>__TAILWIND_CSS__${CSS}</style>
+  <style>${CSS}__TAILWIND_CSS__</style>
 </head>
 <body class="bg-[#1c1508] text-[#d9c9a0] font-mono text-sm leading-7 tracking-tight antialiased overflow-x-hidden">
   <a href="#main-content" class="absolute -top-full left-4 bg-[#c4982e] text-[#1c1508] px-4 py-2 z-[200] font-bold focus:top-2 rounded">Skip to content</a>
@@ -713,7 +711,7 @@ async function build() {
       if (imgUrl) {
         const localImg = await downloadImage(imgUrl)
         indexContent += `<h1 class="text-[1.8em] text-center tracking-tight mb-5 leading-snug">Logan, from the Internet.</h1>\n`
-        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[400px] w-full h-auto aspect-[256/182] mx-auto mb-6 block" width="256" height="182">\n`
+        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[320px] w-full h-auto aspect-[256/182] mx-auto mb-6 block" width="256" height="182">\n`
       }
       continue
     }
