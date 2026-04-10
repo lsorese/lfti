@@ -470,7 +470,7 @@ function htmlTemplate(
         .join('\n')}
     </div>`
   } else if (entries.length > 0) {
-    entriesHtml = `<ul class="mt-5 list-none p-0 space-y-1.5">
+    entriesHtml = `<ul class="mt-5 list-none p-0 space-y-0.5">
       ${entries
         .map(
           (e) =>
@@ -702,7 +702,7 @@ async function build() {
 
         // List for entries without covers
         if (withoutCovers.length > 0) {
-          indexContent += `<ul class="mt-5 list-none p-0 space-y-1.5">\n`
+          indexContent += `<ul class="mt-5 list-none p-0 space-y-0.5">\n`
           for (const e of withoutCovers) {
             indexContent += `<li><a href="/${e.slug}.html" class="font-bold hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a></li>\n`
           }
