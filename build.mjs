@@ -127,7 +127,7 @@ async function buildBookmarkCard(url, og) {
     if (imgSrc.startsWith('http')) imgSrc = ''
   }
   const imgHtml = imgSrc
-    ? `<div class="w-[200px] md:w-[200px] max-md:w-[120px] max-sm:hidden shrink-0"><img src="${escapeHtml(imgSrc)}" alt="" loading="lazy" class="w-full h-full object-cover block"></div>`
+    ? `<div class="w-[200px] md:w-[200px] max-md:w-[120px] max-sm:hidden shrink-0"><img src="${escapeHtml(imgSrc)}" alt="" loading="lazy" class="w-full h-full object-cover block !m-0"></div>`
     : ''
   const desc = og.description
     ? `<div class="text-xs text-[rgba(217,201,160,0.6)] line-clamp-2">${escapeHtml(og.description.slice(0, 200))}</div>`
@@ -676,7 +676,7 @@ async function build() {
       if (imgUrl) {
         const localImg = await downloadImage(imgUrl)
         indexContent += `<h1 class="text-[1.8em] text-center tracking-tight mb-5 leading-snug">Logan, from the Internet.</h1>\n`
-        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[224px] w-full h-auto aspect-[256/182] mx-auto mb-6 block" width="256" height="182">\n`
+        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[224px] w-full h-auto aspect-[256/182] !mx-auto !mb-6 block" width="256" height="182">\n`
       }
       continue
     }
