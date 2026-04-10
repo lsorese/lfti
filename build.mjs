@@ -132,7 +132,7 @@ async function buildBookmarkCard(url, og) {
   const desc = og.description
     ? `<div class="text-xs text-[rgba(217,201,160,0.6)] line-clamp-2">${escapeHtml(og.description.slice(0, 200))}</div>`
     : ''
-  return `<a href="${escapeHtml(url)}" class="bookmark-card flex border border-[rgba(217,201,160,0.15)] my-3 overflow-hidden rounded-md transition-colors duration-150 hover:border-[#c4982e]" target="_blank" rel="noopener noreferrer">
+  return `<a href="${escapeHtml(url)}" class="bookmark-card flex border border-[rgba(217,201,160,0.15)] my-3 overflow-hidden transition-colors duration-150 hover:border-[#c4982e]" target="_blank" rel="noopener noreferrer">
   <div class="flex-1 py-3 px-4 min-w-0 flex flex-col gap-1.5">
     <div class="font-bold text-sm truncate">${escapeHtml(og.title)}</div>
     ${desc}
@@ -186,13 +186,13 @@ async function buildEmbed(url) {
     // Spotify
     if (host.includes('spotify.com')) {
       const embedUrl = url.replace('open.spotify.com/', 'open.spotify.com/embed/')
-      return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" loading="lazy" class="block border-0"></iframe></div>`
+      return `<div class="my-5 overflow-hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" loading="lazy" class="block border-0"></iframe></div>`
     }
 
     // Apple Music
     if (host.includes('music.apple.com')) {
       const embedUrl = url.replace('music.apple.com', 'embed.music.apple.com')
-      return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="450" frameborder="0" allow="autoplay *; encrypted-media *;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" loading="lazy" class="block border-0"></iframe></div>`
+      return `<div class="my-5 overflow-hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="450" frameborder="0" allow="autoplay *; encrypted-media *;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" loading="lazy" class="block border-0"></iframe></div>`
     }
 
     // Bandcamp — handle already-embedded URLs and scrape for embed IDs
@@ -201,7 +201,7 @@ async function buildEmbed(url) {
       const existingEmbed = url.match(/EmbeddedPlayer\/(album|track)=(\d+)/)
       if (existingEmbed) {
         const isAlbum = existingEmbed[1] === 'album'
-        return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="${escapeHtml(url.startsWith('http') ? url : 'https://' + url)}" width="100%" height="${isAlbum ? 472 : 120}" frameborder="0" seamless loading="lazy" class="block border-0"></iframe></div>`
+        return `<div class="my-5 overflow-hidden"><iframe src="${escapeHtml(url.startsWith('http') ? url : 'https://' + url)}" width="100%" height="${isAlbum ? 472 : 120}" frameborder="0" seamless loading="lazy" class="block border-0"></iframe></div>`
       }
 
       process.stdout.write(`  Fetching Bandcamp embed ID for ${u.pathname}... `)
@@ -211,10 +211,10 @@ async function buildEmbed(url) {
         const isAlbum = info.type === 'album'
         const height = isAlbum ? 472 : 120
         const size = isAlbum ? 'size=large' : 'size=large'
-        return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="https://bandcamp.com/EmbeddedPlayer/${info.type}=${info.id}/${size}/bgcol=1a1410/linkcol=8b6914/tracklist=false/transparent=true/" width="100%" height="${height}" frameborder="0" seamless loading="lazy" class="block border-0"></iframe></div>`
+        return `<div class="my-5 overflow-hidden"><iframe src="https://bandcamp.com/EmbeddedPlayer/${info.type}=${info.id}/${size}/bgcol=1a1410/linkcol=8b6914/tracklist=false/transparent=true/" width="100%" height="${height}" frameborder="0" seamless loading="lazy" class="block border-0"></iframe></div>`
       }
       console.log('failed, using fallback link')
-      return `<div class="my-5 rounded-lg overflow-hidden"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="block py-3 px-4 border border-[rgba(217,201,160,0.15)] rounded-md text-[rgba(217,201,160,0.6)] text-[13px] break-all hover:border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-150">${escapeHtml(url)}</a></div>`
+      return `<div class="my-5 overflow-hidden"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="block py-3 px-4 border border-[rgba(217,201,160,0.15)] text-[rgba(217,201,160,0.6)] text-[13px] break-all hover:border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-150">${escapeHtml(url)}</a></div>`
     }
 
     // YouTube
@@ -222,12 +222,12 @@ async function buildEmbed(url) {
       let videoId = u.searchParams.get('v')
       if (host.includes('youtu.be')) videoId = u.pathname.slice(1)
       if (videoId) {
-        return `<div class="my-5 rounded-lg overflow-hidden relative pb-[56.25%] h-0"><iframe src="https://www.youtube.com/embed/${escapeHtml(videoId)}" width="100%" height="400" frameborder="0" allowfullscreen loading="lazy" class="absolute inset-0 w-full h-full border-0"></iframe></div>`
+        return `<div class="my-5 overflow-hidden relative pb-[56.25%] h-0"><iframe src="https://www.youtube.com/embed/${escapeHtml(videoId)}" width="100%" height="400" frameborder="0" allowfullscreen loading="lazy" class="absolute inset-0 w-full h-full border-0"></iframe></div>`
       }
     }
 
     // Fallback
-    return `<div class="my-5"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="block py-3 px-4 border border-[rgba(217,201,160,0.15)] rounded-md text-[rgba(217,201,160,0.6)] text-[13px] break-all hover:border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-150">${escapeHtml(url)}</a></div>`
+    return `<div class="my-5"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="block py-3 px-4 border border-[rgba(217,201,160,0.15)] text-[rgba(217,201,160,0.6)] text-[13px] break-all hover:border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-150">${escapeHtml(url)}</a></div>`
   } catch {
     return `<p><a href="${escapeHtml(url)}">${escapeHtml(url)}</a></p>`
   }
@@ -434,7 +434,7 @@ const CSS = `
 @font-face { font-family: 'Space Mono'; font-style: italic; font-weight: 700; font-display: swap; src: url(/fonts/space-mono-bold-italic.woff2) format('woff2'); }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; background: #1c1508; }
-::-webkit-scrollbar-thumb { background: rgba(217,201,160,0.15); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(217,201,160,0.15); }
 ::-webkit-scrollbar-track { background: #1c1508; }
 
 /* Content typography — targets markdown output we can't add classes to */
@@ -452,13 +452,21 @@ const CSS = `
   border-left: 2px solid #c4982e;
   font-size: 13px; opacity: 0.85; line-height: 1.8;
 }
+.content blockquote ul {
+  list-style: none; padding-left: 0; margin: 0.5em 0 0;
+}
+.content blockquote li {
+  padding: 0; font-style: italic; color: rgba(217,201,160,0.5);
+}
+.content blockquote li::before {
+  content: '— ';
+}
 .content pre {
   background: #120e04; border: 1px solid #332710;
   font-size: 13px; line-height: 1.55; padding: 1em;
-  overflow-x: auto; margin: 1.25em 0; border-radius: 6px;
-}
+  overflow-x: auto; margin: 1.25em 0;}
 .content code { font-family: 'Space Mono', monospace; font-size: 0.9em; }
-.content p code, .content li code { background: #2a1f0e; padding: 2px 6px; border-radius: 3px; }
+.content p code, .content li code { background: #2a1f0e; padding: 2px 6px; }
 .content pre code { background: none; padding: 0; font-size: inherit; }
 .content img { max-width: 100%; height: auto; display: block; margin: 1.25em auto; border-radius: 6px; }
 .content hr { border: none; border-top: 1px solid rgba(217,201,160,0.12); margin: 2.5em 0; }
@@ -541,7 +549,7 @@ function htmlTemplate(
   <style>${CSS}__TAILWIND_CSS__</style>
 </head>
 <body class="bg-[#1c1508] text-[#d9c9a0] font-mono text-sm leading-7 tracking-tight antialiased overflow-x-hidden">
-  <a href="#main-content" class="absolute -top-full left-4 bg-[#c4982e] text-[#1c1508] px-4 py-2 z-[200] font-bold focus:top-2 rounded">Skip to content</a>
+  <a href="#main-content" class="absolute -top-full left-4 bg-[#c4982e] text-[#1c1508] px-4 py-2 z-[200] font-bold focus:top-2">Skip to content</a>
   ${!isIndex ? `<header class="sticky top-0 z-[100] bg-[rgba(28,21,8,0.95)] backdrop-blur-2xl backdrop-saturate-[1.8] border-b border-[rgba(217,201,160,0.12)]" role="banner">
     <div class="max-w-[600px] mx-auto px-4 py-4 flex items-center justify-between">
       <a href="/" class="font-bold text-sm tracking-tight hover:text-[#c4982e] transition-colors duration-200">Logan, from the Internet.</a>
@@ -711,7 +719,7 @@ async function build() {
       if (imgUrl) {
         const localImg = await downloadImage(imgUrl)
         indexContent += `<h1 class="text-[1.8em] text-center tracking-tight mb-5 leading-snug">Logan, from the Internet.</h1>\n`
-        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[320px] w-full h-auto aspect-[256/182] mx-auto mb-6 block" width="256" height="182">\n`
+        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[224px] w-full h-auto aspect-[256/182] mx-auto mb-6 block" width="256" height="182">\n`
       }
       continue
     }
