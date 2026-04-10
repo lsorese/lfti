@@ -7,6 +7,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import crypto from 'crypto'
+import { execSync } from 'child_process'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const OUT_DIR = path.join(__dirname, 'out')
@@ -126,16 +127,16 @@ async function buildBookmarkCard(url, og) {
     if (imgSrc.startsWith('http')) imgSrc = ''
   }
   const imgHtml = imgSrc
-    ? `<div class="bookmark-image"><img src="${escapeHtml(imgSrc)}" alt="" loading="lazy"></div>`
+    ? `<div class="w-[200px] md:w-[200px] max-md:w-[120px] max-sm:hidden shrink-0"><img src="${escapeHtml(imgSrc)}" alt="" loading="lazy" class="w-full h-full object-cover block"></div>`
     : ''
   const desc = og.description
-    ? `<div class="bookmark-desc">${escapeHtml(og.description.slice(0, 200))}</div>`
+    ? `<div class="text-xs text-[rgba(217,201,160,0.6)] line-clamp-2">${escapeHtml(og.description.slice(0, 200))}</div>`
     : ''
-  return `<a href="${escapeHtml(url)}" class="bookmark-card${imgSrc ? '' : ' no-image'}" target="_blank" rel="noopener noreferrer">
-  <div class="bookmark-content">
-    <div class="bookmark-title">${escapeHtml(og.title)}</div>
+  return `<a href="${escapeHtml(url)}" class="bookmark-card flex border border-[rgba(217,201,160,0.15)] my-3 overflow-hidden rounded-md transition-colors duration-150 hover:border-[#c4982e]" target="_blank" rel="noopener noreferrer">
+  <div class="flex-1 py-3 px-4 min-w-0 flex flex-col gap-1.5">
+    <div class="font-bold text-sm truncate">${escapeHtml(og.title)}</div>
     ${desc}
-    <div class="bookmark-url">${escapeHtml(og.siteName || new URL(url).hostname)}</div>
+    <div class="text-[11px] text-[rgba(217,201,160,0.6)] mt-auto">${escapeHtml(og.siteName || new URL(url).hostname)}</div>
   </div>
   ${imgHtml}
 </a>`
@@ -185,13 +186,13 @@ async function buildEmbed(url) {
     // Spotify
     if (host.includes('spotify.com')) {
       const embedUrl = url.replace('open.spotify.com/', 'open.spotify.com/embed/')
-      return `<div class="embed"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" loading="lazy"></iframe></div>`
+      return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="352" frameborder="0" allowtransparency="true" allow="encrypted-media" loading="lazy" class="block border-0"></iframe></div>`
     }
 
     // Apple Music
     if (host.includes('music.apple.com')) {
       const embedUrl = url.replace('music.apple.com', 'embed.music.apple.com')
-      return `<div class="embed"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="450" frameborder="0" allow="autoplay *; encrypted-media *;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" loading="lazy"></iframe></div>`
+      return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="${escapeHtml(embedUrl)}" width="100%" height="450" frameborder="0" allow="autoplay *; encrypted-media *;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" loading="lazy" class="block border-0"></iframe></div>`
     }
 
     // Bandcamp — handle already-embedded URLs and scrape for embed IDs
@@ -200,7 +201,7 @@ async function buildEmbed(url) {
       const existingEmbed = url.match(/EmbeddedPlayer\/(album|track)=(\d+)/)
       if (existingEmbed) {
         const isAlbum = existingEmbed[1] === 'album'
-        return `<div class="embed"><iframe src="${escapeHtml(url.startsWith('http') ? url : 'https://' + url)}" width="100%" height="${isAlbum ? 472 : 120}" frameborder="0" seamless loading="lazy"></iframe></div>`
+        return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="${escapeHtml(url.startsWith('http') ? url : 'https://' + url)}" width="100%" height="${isAlbum ? 472 : 120}" frameborder="0" seamless loading="lazy" class="block border-0"></iframe></div>`
       }
 
       process.stdout.write(`  Fetching Bandcamp embed ID for ${u.pathname}... `)
@@ -210,10 +211,10 @@ async function buildEmbed(url) {
         const isAlbum = info.type === 'album'
         const height = isAlbum ? 472 : 120
         const size = isAlbum ? 'size=large' : 'size=large'
-        return `<div class="embed"><iframe src="https://bandcamp.com/EmbeddedPlayer/${info.type}=${info.id}/${size}/bgcol=1a1410/linkcol=8b6914/tracklist=false/transparent=true/" width="100%" height="${height}" frameborder="0" seamless loading="lazy"></iframe></div>`
+        return `<div class="my-5 rounded-lg overflow-hidden"><iframe src="https://bandcamp.com/EmbeddedPlayer/${info.type}=${info.id}/${size}/bgcol=1a1410/linkcol=8b6914/tracklist=false/transparent=true/" width="100%" height="${height}" frameborder="0" seamless loading="lazy" class="block border-0"></iframe></div>`
       }
       console.log('failed, using fallback link')
-      return `<div class="embed"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="embed-fallback">${escapeHtml(url)}</a></div>`
+      return `<div class="my-5 rounded-lg overflow-hidden"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="block py-3 px-4 border border-[rgba(217,201,160,0.15)] rounded-md text-[rgba(217,201,160,0.6)] text-[13px] break-all hover:border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-150">${escapeHtml(url)}</a></div>`
     }
 
     // YouTube
@@ -221,12 +222,12 @@ async function buildEmbed(url) {
       let videoId = u.searchParams.get('v')
       if (host.includes('youtu.be')) videoId = u.pathname.slice(1)
       if (videoId) {
-        return `<div class="embed embed-video"><iframe src="https://www.youtube.com/embed/${escapeHtml(videoId)}" width="100%" height="400" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`
+        return `<div class="my-5 rounded-lg overflow-hidden relative pb-[56.25%] h-0"><iframe src="https://www.youtube.com/embed/${escapeHtml(videoId)}" width="100%" height="400" frameborder="0" allowfullscreen loading="lazy" class="absolute inset-0 w-full h-full border-0"></iframe></div>`
       }
     }
 
     // Fallback
-    return `<div class="embed"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="embed-fallback">${escapeHtml(url)}</a></div>`
+    return `<div class="my-5"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="block py-3 px-4 border border-[rgba(217,201,160,0.15)] rounded-md text-[rgba(217,201,160,0.6)] text-[13px] break-all hover:border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-150">${escapeHtml(url)}</a></div>`
   } catch {
     return `<p><a href="${escapeHtml(url)}">${escapeHtml(url)}</a></p>`
   }
@@ -427,336 +428,47 @@ async function renderPage(pageId) {
 // ---------------------------------------------------------------------------
 
 const CSS = `
+@font-face { font-family: 'Space Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(/fonts/space-mono-regular.woff2) format('woff2'); }
+@font-face { font-family: 'Space Mono'; font-style: italic; font-weight: 400; font-display: swap; src: url(/fonts/space-mono-regular-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Space Mono'; font-style: normal; font-weight: 700; font-display: swap; src: url(/fonts/space-mono-bold.woff2) format('woff2'); }
+@font-face { font-family: 'Space Mono'; font-style: italic; font-weight: 700; font-display: swap; src: url(/fonts/space-mono-bold-italic.woff2) format('woff2'); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg: #1c1508;
-  --bg-secondary: #2a1f0e;
-  --fg: #d9c9a0;
-  --fg-muted: rgba(217,201,160,0.6);
-  --fg-subtle: rgba(217,201,160,0.15);
-  --accent: #c4982e;
-  --accent-hover: #dab445;
-  --code-bg: #120e04;
-  --code-border: #332710;
-  --code-fg: #d9c9a0;
-  --header-bg: rgba(28,21,8,0.95);
-}
-
 a { color: inherit; text-decoration: none; }
 
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: 'Space Mono', monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  letter-spacing: -0.01em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
+::-webkit-scrollbar { width: 4px; height: 4px; background: #1c1508; }
+::-webkit-scrollbar-thumb { background: rgba(217,201,160,0.15); border-radius: 2px; }
+::-webkit-scrollbar-track { background: #1c1508; }
 
-/* scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--fg-subtle); }
-::-webkit-scrollbar-track { background: var(--bg); }
-
-/* skip link (accessibility) */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 16px;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 8px 16px;
-  z-index: 200;
-  font-weight: 700;
-}
-.skip-link:focus { top: 8px; }
-
-/* header */
-header {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--header-bg);
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  border-bottom: 1px solid var(--fg-subtle);
-}
-.header-inner {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.site-title { font-weight: 700; font-size: 14px; letter-spacing: -0.02em; }
-
-/* main */
-main {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 32px 20px calc(max(5vh, 32px));
-}
-main.index-page { max-width: 600px; }
-
-nav { margin-bottom: 24px; }
-nav a {
-  color: var(--fg-muted);
-  border-bottom: 1px solid var(--accent);
-}
-nav a:hover { color: var(--fg); }
-
-/* hero image on index */
-.content img.index-hero-img {
-  max-width: 400px;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 256 / 182;
-  margin: 0 auto 1em;
-  display: block;
-}
-
-/* index page title */
-.index-title {
-  font-size: 1.8em;
-  text-align: center;
-  letter-spacing: -0.03em;
-  margin-bottom: 1em;
-  line-height: 1.3;
-}
-
-/* page title */
-.page-title {
-  font-size: 1.8em;
-  text-align: center;
-  letter-spacing: -0.03em;
-  margin-bottom: 1.5em;
-  line-height: 1.3;
-}
-
-/* content typography */
-.content h1 { font-size: 1.6em; margin: 1.5em 0 0.3em; letter-spacing: -0.02em; font-weight: 700; }
-.content h2 { font-size: 1.3em; margin: 2em 0 0.3em; letter-spacing: -0.02em; font-weight: 700; }
-.content h3 { font-size: 1.1em; margin: 1.5em 0 0.3em; letter-spacing: -0.02em; font-weight: 700; }
-.content p { padding: 0.3em 0; line-height: 1.7; }
-
-.content a {
-  border-bottom: 0.1rem solid var(--accent);
-  background: linear-gradient(90deg, var(--accent), var(--accent-hover)) no-repeat 50% 100% / 0 0.1rem;
-  transition: background-position 300ms, background-size 300ms;
-}
-.content a:hover {
-  border-bottom-color: transparent;
-  background-position: 0 100%;
-  background-size: 100% 0.1rem;
-}
-
-/* blockquote */
+/* Content typography — targets markdown output we can't add classes to */
+.content h1 { font-size: 1.5em; margin: 1.75em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.35; }
+.content h2 { font-size: 1.25em; margin: 2.25em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.4; }
+.content h3 { font-size: 1.1em; margin: 1.75em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.45; }
+.content p { padding: 0.4em 0; line-height: 1.85; }
+.content > p:first-child { padding-top: 0; }
+.content a { border-bottom: 1px solid #c4982e; transition: color 200ms ease; }
+.content a:hover { color: #dab445; }
+.content a.bookmark-card { border-bottom: none; }
+.content a.page-link { border-bottom: 1px solid #c4982e; }
 .content blockquote {
-  margin: 0.75em 0;
-  padding: 0.2em 0.75em;
-  border-left: 2px solid var(--accent);
-  font-style: normal;
-  font-size: 13px;
-  opacity: 0.85;
+  margin: 1em 0; padding: 0.3em 1em;
+  border-left: 2px solid #c4982e;
+  font-size: 13px; opacity: 0.85; line-height: 1.8;
 }
-
-/* code */
 .content pre {
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  color: var(--code-fg);
-  font-size: 13px;
-  line-height: 1.35;
-  padding: 16px;
-  overflow-x: auto;
-  border-radius: 0;
-  margin: 1em 0;
+  background: #120e04; border: 1px solid #332710;
+  font-size: 13px; line-height: 1.55; padding: 1em;
+  overflow-x: auto; margin: 1.25em 0; border-radius: 6px;
 }
-.content code {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.9em;
-}
-.content p code,
-.content li code {
-  background: var(--bg-secondary);
-  padding: 2px 5px;
-  border-radius: 2px;
-}
-.content pre code {
-  background: none;
-  padding: 0;
-  font-size: inherit;
-}
-
-/* images */
-.content img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 1em auto;
-}
-
-/* hr */
-.content hr {
-  border: none;
-  border-top: 1px solid var(--fg-subtle);
-  margin: 1.5em 0;
-}
-
-/* lists */
-.content ul, .content ol { line-height: 1.35; padding-left: 1.5em; margin: 0.5em 0; }
-.content li { padding: 2px 0; }
-
-/* tables */
-.content table { border-collapse: collapse; width: 100%; margin: 1em 0; font-size: 13px; }
-.content th, .content td { border: 1px solid var(--fg-subtle); padding: 6px 10px; text-align: left; }
-.content th { background: var(--bg-secondary); font-weight: 700; }
-
-/* entries grid (index page gallery) */
-.entries {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  margin-top: 2em;
-}
-
-.entry { position: relative; overflow: hidden; }
-
-.entry.has-cover .entry-cover {
-  display: block;
-  width: 100%;
-  padding-bottom: 100%;
-  position: relative;
-  overflow: hidden;
-}
-.entry.has-cover .entry-cover img {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transition: filter 150ms linear;
-}
-.entry.has-cover:hover .entry-cover img {
-  filter: brightness(110%);
-}
-.entry.has-cover .entry-info { display: none; }
-
-.entry:not(.has-cover) {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border: 1px solid var(--fg-subtle);
-}
-.entry-title { font-weight: 700; display: block; }
-.entry-title:hover { color: var(--accent); }
-.entry time { font-size: 12px; color: var(--fg-muted); display: block; margin-top: 2px; }
-
-/* entries list (no covers) */
-.content .entries-list { margin-top: 1em; list-style: none; padding: 0; }
-.entries-list li { padding: 4px 0; }
-.entries-list a { font-weight: 700; }
-.entries-list a:hover { color: var(--accent); }
-.entries-list time { font-size: 12px; color: var(--fg-muted); margin-left: 12px; }
-
-/* embeds */
-.embed {
-  margin: 1em 0;
-  border-radius: 0;
-  overflow: hidden;
-}
-.embed iframe {
-  display: block;
-  border: none;
-}
-.embed-video {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-}
-.embed-video iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-}
-.embed-fallback {
-  display: block;
-  padding: 12px 14px;
-  border: 1px solid var(--fg-subtle);
-  color: var(--fg-muted);
-  font-size: 13px;
-  word-break: break-all;
-}
-.embed-fallback:hover { border-color: var(--accent); color: var(--fg); }
-
-/* page links on index */
-.page-link {
-  font-weight: 700;
-  border-bottom: 1px solid var(--accent);
-}
-.page-link:hover { color: var(--accent); }
-
-/* bookmark cards */
-.bookmark-card {
-  display: flex;
-  border: 1px solid var(--fg-subtle);
-  margin: 0.75em 0;
-  overflow: hidden;
-  transition: border-color 150ms;
-  text-decoration: none;
-  background: none !important;
-  border-bottom: 1px solid var(--fg-subtle) !important;
-}
-.bookmark-card:hover { border-color: var(--accent) !important; }
-.bookmark-content {
-  flex: 1;
-  padding: 12px 14px;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.bookmark-title {
-  font-weight: 700;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.bookmark-desc {
-  font-size: 12px;
-  color: var(--fg-muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.bookmark-url {
-  font-size: 11px;
-  color: var(--fg-muted);
-  margin-top: auto;
-}
-.bookmark-image {
-  width: 200px;
-  flex-shrink: 0;
-}
-.bookmark-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-@media (max-width: 720px) {
-  .entries { grid-template-columns: repeat(2, 1fr); }
-  main { padding-left: 2vw; padding-right: 2vw; }
-  .bookmark-image { width: 120px; }
-}
-@media (max-width: 480px) {
-  .entries { grid-template-columns: repeat(2, 1fr); }
-  .bookmark-image { display: none; }
-}
+.content code { font-family: 'Space Mono', monospace; font-size: 0.9em; }
+.content p code, .content li code { background: #2a1f0e; padding: 2px 6px; border-radius: 3px; }
+.content pre code { background: none; padding: 0; font-size: inherit; }
+.content img { max-width: 100%; height: auto; display: block; margin: 1.25em auto; border-radius: 6px; }
+.content hr { border: none; border-top: 1px solid rgba(217,201,160,0.12); margin: 2.5em 0; }
+.content ul, .content ol { line-height: 1.8; padding-left: 1.5em; margin: 0.75em 0; }
+.content li { padding: 4px 0; }
+.content table { border-collapse: collapse; width: 100%; margin: 1.25em 0; font-size: 13px; }
+.content th, .content td { border: 1px solid rgba(217,201,160,0.15); padding: 8px 12px; text-align: left; }
+.content th { background: #2a1f0e; font-weight: 700; }
 `
 
 function escapeHtml(str) {
@@ -769,36 +481,37 @@ function htmlTemplate(
   { isIndex = false, entries = [], backLink = true } = {}
 ) {
   const nav =
-    backLink && !isIndex ? '<nav><a href="/">← back</a></nav>' : ''
+    backLink && !isIndex ? '<nav class="mb-7"><a href="/" class="text-[rgba(217,201,160,0.6)] border-b border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-200">&larr; back</a></nav>' : ''
 
   const hasCoverEntries = entries.some((e) => e.coverLocal)
 
   let entriesHtml = ''
   if (entries.length > 0 && hasCoverEntries) {
-    // Gallery grid (matches current 4-col image grid)
-    entriesHtml = `<div class="entries">
+    entriesHtml = `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0.5 mt-8">
       ${entries
         .map((e) => {
-          const cover = e.coverLocal
-            ? `<a href="/${e.slug}.html" class="entry-cover"><img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy"></a>`
-            : ''
-          return `<div class="entry${e.coverLocal ? ' has-cover' : ''}">
-            ${cover}
-            <div class="entry-info">
-              <a href="/${e.slug}.html" class="entry-title">${escapeHtml(e.title)}</a>
-              ${e.date ? `<time>${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>` : ''}
+          if (e.coverLocal) {
+            return `<div class="relative overflow-hidden group">
+              <a href="/${e.slug}.html" class="block w-full pb-[100%] relative overflow-hidden">
+                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110">
+              </a>
+            </div>`
+          }
+          return `<div class="flex items-center p-3 border border-[rgba(217,201,160,0.15)]">
+            <div>
+              <a href="/${e.slug}.html" class="font-bold block hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a>
+              ${e.date ? `<time class="text-xs text-[rgba(217,201,160,0.6)] block mt-1">${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>` : ''}
             </div>
           </div>`
         })
         .join('\n')}
     </div>`
   } else if (entries.length > 0) {
-    // Simple list fallback
-    entriesHtml = `<ul class="entries-list">
+    entriesHtml = `<ul class="mt-5 list-none p-0 space-y-1.5">
       ${entries
         .map(
           (e) =>
-            `<li><a href="/${e.slug}.html">${escapeHtml(e.title)}</a>${e.date ? `<time>${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</time>` : ''}</li>`
+            `<li><a href="/${e.slug}.html" class="font-bold hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a>${e.date ? `<time class="text-xs text-[rgba(217,201,160,0.6)] ml-3">${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</time>` : ''}</li>`
         )
         .join('\n')}
     </ul>`
@@ -827,22 +540,19 @@ function htmlTemplate(
   <link rel="icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128x128.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  <style>${CSS}</style>
+  <style>__TAILWIND_CSS__${CSS}</style>
 </head>
-<body>
-  <a href="#main-content" class="skip-link">Skip to content</a>
-  ${!isIndex ? `<header role="banner">
-    <div class="header-inner">
-      <a href="/" class="site-title">Logan, from the Internet.</a>
+<body class="bg-[#1c1508] text-[#d9c9a0] font-mono text-sm leading-7 tracking-tight antialiased overflow-x-hidden">
+  <a href="#main-content" class="absolute -top-full left-4 bg-[#c4982e] text-[#1c1508] px-4 py-2 z-[200] font-bold focus:top-2 rounded">Skip to content</a>
+  ${!isIndex ? `<header class="sticky top-0 z-[100] bg-[rgba(28,21,8,0.95)] backdrop-blur-2xl backdrop-saturate-[1.8] border-b border-[rgba(217,201,160,0.12)]" role="banner">
+    <div class="max-w-[600px] mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/" class="font-bold text-sm tracking-tight hover:text-[#c4982e] transition-colors duration-200">Logan, from the Internet.</a>
     </div>
   </header>` : ''}
-  <main id="main-content" class="${isIndex ? 'index-page' : 'page'}" role="main">
+  <main id="main-content" class="max-w-[600px] mx-auto px-5 max-md:px-[2vw] pt-10 pb-[max(5vh,2rem)]" role="main">
     ${nav}
     <article class="content">
-      ${!isIndex ? `<h1 class="page-title">${escapeHtml(title)}</h1>` : ''}
+      ${!isIndex ? `<h1 class="text-[1.8em] text-center tracking-tight mb-10 leading-snug">${escapeHtml(title)}</h1>` : ''}
       ${content}
       ${entriesHtml}
     </article>
@@ -1002,8 +712,8 @@ async function build() {
       const imgUrl = block.image?.file?.url || block.image?.external?.url
       if (imgUrl) {
         const localImg = await downloadImage(imgUrl)
-        indexContent += `<h1 class="index-title">Logan, from the Internet.</h1>\n`
-        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img" width="256" height="182">\n`
+        indexContent += `<h1 class="text-[1.8em] text-center tracking-tight mb-5 leading-snug">Logan, from the Internet.</h1>\n`
+        indexContent += `<img src="${localImg}" alt="Logan, from the Internet" class="index-hero-img max-w-[400px] w-full h-auto aspect-[256/182] mx-auto mb-6 block" width="256" height="182">\n`
       }
       continue
     }
@@ -1016,11 +726,12 @@ async function build() {
 
         // Gallery grid for entries with covers
         if (withCovers.length > 0) {
-          indexContent += `<div class="entries">\n`
+          indexContent += `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0.5 mt-8">\n`
           for (const e of withCovers) {
-            indexContent += `<div class="entry has-cover">
-              <a href="/${e.slug}.html" class="entry-cover"><img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy"></a>
-              <div class="entry-info"><a href="/${e.slug}.html" class="entry-title">${escapeHtml(e.title)}</a></div>
+            indexContent += `<div class="relative overflow-hidden group">
+              <a href="/${e.slug}.html" class="block w-full pb-[100%] relative overflow-hidden">
+                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110">
+              </a>
             </div>\n`
           }
           indexContent += `</div>\n`
@@ -1028,9 +739,9 @@ async function build() {
 
         // List for entries without covers
         if (withoutCovers.length > 0) {
-          indexContent += `<ul class="entries-list">\n`
+          indexContent += `<ul class="mt-5 list-none p-0 space-y-1.5">\n`
           for (const e of withoutCovers) {
-            indexContent += `<li><a href="/${e.slug}.html">${escapeHtml(e.title)}</a></li>\n`
+            indexContent += `<li><a href="/${e.slug}.html" class="font-bold hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a></li>\n`
           }
           indexContent += `</ul>\n`
         }
@@ -1039,7 +750,7 @@ async function build() {
       // Render as a link
       const entry = entries.find((e) => e.pageId === block.id)
       if (entry) {
-        indexContent += `<p><a href="/${entry.slug}.html" class="page-link">${escapeHtml(entry.title)}</a></p>\n`
+        indexContent += `<p><a href="/${entry.slug}.html" class="page-link font-bold border-b border-[#c4982e] hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(entry.title)}</a></p>\n`
       }
     } else if (block.type === 'bookmark') {
       // Render bookmark card
@@ -1111,6 +822,27 @@ async function build() {
     `User-agent: *\nAllow: /\nSitemap: ${DOMAIN}/sitemap.xml\n`
   )
   console.log('✓ robots.txt')
+
+  // 10. Compile Tailwind CSS from generated HTML
+  console.log('\nCompiling Tailwind CSS...')
+  const twInput = path.join(__dirname, 'styles.css')
+  const twOutput = path.join(OUT_DIR, 'tailwind.css')
+  execSync(
+    `npx @tailwindcss/cli -i ${twInput} -o ${twOutput} --minify`,
+    { cwd: __dirname, stdio: 'pipe' }
+  )
+  const compiledTw = await fs.readFile(twOutput, 'utf-8')
+
+  // Inject compiled Tailwind CSS into all HTML files
+  const htmlFiles = (await fs.readdir(OUT_DIR)).filter((f) => f.endsWith('.html'))
+  for (const file of htmlFiles) {
+    const filePath = path.join(OUT_DIR, file)
+    let html = await fs.readFile(filePath, 'utf-8')
+    html = html.replace('__TAILWIND_CSS__', compiledTw)
+    await fs.writeFile(filePath, html)
+  }
+  await fs.rm(twOutput) // clean up standalone CSS file
+  console.log(`✓ Tailwind CSS compiled and injected into ${htmlFiles.length} pages`)
 
   console.log(`\n✓ Built ${entries.length + 1} pages to ${OUT_DIR}/`)
 }
