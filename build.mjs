@@ -450,7 +450,7 @@ function htmlTemplate(
 
   let entriesHtml = ''
   if (entries.length > 0 && hasCoverEntries) {
-    entriesHtml = `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0.5 mt-8">
+    entriesHtml = `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0 mt-8">
       ${entries
         .map((e) => {
           if (e.coverLocal) {
@@ -689,7 +689,7 @@ async function build() {
 
         // Gallery grid for entries with covers
         if (withCovers.length > 0) {
-          indexContent += `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0.5 mt-8">\n`
+          indexContent += `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0 mt-8">\n`
           for (const e of withCovers) {
             indexContent += `<div class="relative overflow-hidden group">
               <a href="/${e.slug}.html" class="block w-full pb-[100%] relative overflow-hidden">
