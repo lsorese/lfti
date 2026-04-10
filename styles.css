@@ -5,3 +5,49 @@
 @theme {
   --font-mono: 'Space Mono', monospace;
 }
+
+@layer base {
+  ::-webkit-scrollbar { width: 4px; height: 4px; background: #1c1508; }
+  ::-webkit-scrollbar-thumb { background: rgba(217,201,160,0.15); }
+  ::-webkit-scrollbar-track { background: #1c1508; }
+
+  /* Content typography — targets markdown output we can't add classes to */
+  .content h1 { font-size: 1.5em; margin: 1.75em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.35; }
+  .content h2 { font-size: 1.25em; margin: 2.25em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.4; }
+  .content h3 { font-size: 1.1em; margin: 1.75em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.45; }
+  .content p { padding: 0.4em 0; line-height: 1.85; }
+  .content > p:first-child { padding-top: 0; }
+  .content a { border-bottom: 1px solid #c4982e; transition: color 200ms ease; }
+  .content a:hover { color: #dab445; }
+  .content a.bookmark-card { border-bottom: none; }
+  .content a.page-link { border-bottom: 1px solid #c4982e; }
+  .content blockquote {
+    margin: 1em 0; padding: 0.3em 1em;
+    border-left: 2px solid #c4982e;
+    font-size: 13px; opacity: 0.85; line-height: 1.8;
+  }
+  .content blockquote ul {
+    list-style: none; padding-left: 0; margin: 0.5em 0 0;
+  }
+  .content blockquote li {
+    padding: 0; font-style: italic; color: rgba(217,201,160,0.5);
+  }
+  .content blockquote li::before {
+    content: '— ';
+  }
+  .content pre {
+    background: #120e04; border: 1px solid #332710;
+    font-size: 13px; line-height: 1.55; padding: 1em;
+    overflow-x: auto; margin: 1.25em 0;
+  }
+  .content code { font-family: 'Space Mono', monospace; font-size: 0.9em; }
+  .content p code, .content li code { background: #2a1f0e; padding: 2px 6px; }
+  .content pre code { background: none; padding: 0; font-size: inherit; }
+  .content img { max-width: 100%; height: auto; display: block; margin: 1.25em auto; }
+  .content hr { border: none; border-top: 1px solid rgba(217,201,160,0.12); margin: 2.5em 0; }
+  .content ul, .content ol { line-height: 1.8; padding-left: 1.5em; margin: 0.75em 0; }
+  .content li { padding: 4px 0; }
+  .content table { border-collapse: collapse; width: 100%; margin: 1.25em 0; font-size: 13px; }
+  .content th, .content td { border: 1px solid rgba(217,201,160,0.15); padding: 8px 12px; text-align: left; }
+  .content th { background: #2a1f0e; font-weight: 700; }
+}
