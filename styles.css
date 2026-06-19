@@ -3,51 +3,502 @@
 @source "./out";
 
 @theme {
-  --font-mono: 'Space Mono', monospace;
+  --color-archive-red: #b30000;
+  --color-archive-red-dim: #8a0000;
+  --color-archive-link: #007a7a;
+  --color-archive-visited: #4f6a6a;
+  --color-archive-link-hover: #00524d;
+  --color-archive-ink: #111111;
+  --color-archive-rule: #999999;
+  --font-serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --font-mono: "Courier New", Courier, monospace;
 }
 
 @layer base {
-  ::-webkit-scrollbar { width: 4px; height: 4px; background: #1c1508; }
-  ::-webkit-scrollbar-thumb { background: rgba(217,201,160,0.15); }
-  ::-webkit-scrollbar-track { background: #1c1508; }
+  html {
+    scroll-behavior: smooth;
+    font-size: clamp(16px, 0.5vw + 14px, 19px);
+  }
 
-  /* Content typography — targets markdown output we can't add classes to */
-  .content h1 { font-size: 1.5em; margin: 1.75em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.35; }
-  .content h2 { font-size: 1.25em; margin: 2.25em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.4; }
-  .content h3 { font-size: 1.1em; margin: 1.75em 0 0.5em; letter-spacing: -0.02em; font-weight: 700; line-height: 1.45; }
-  .content p { padding: 0.4em 0; line-height: 1.85; }
-  .content > p:first-child { padding-top: 0; }
-  .content a { border-bottom: 1px solid #c4982e; transition: color 200ms ease; }
-  .content a:hover { color: #dab445; }
-  .content a.bookmark-card { border-bottom: none; }
-  .content a.page-link { border-bottom: 1px solid #c4982e; }
+  body {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--color-archive-ink);
+    background: #ffffff;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  p { margin: 0 0 0.65em; }
+
+  a {
+    color: var(--color-archive-link);
+    text-decoration: underline;
+  }
+  a:visited { color: var(--color-archive-visited); }
+  a:hover, a:focus { color: var(--color-archive-link-hover); }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-archive-rule);
+    margin: 1.6em 0;
+  }
+
+  :focus-visible {
+    outline: 2px dotted var(--color-archive-red);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-archive-red);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; background: #ededed; }
+  ::-webkit-scrollbar-thumb { background: #b8b8b8; }
+  ::-webkit-scrollbar-track { background: #ededed; }
+
+  /* ---------------------------------------------------------------------
+     Content typography — applied to markdown output from Notion.
+     Hooks (.content h1/h2/p/a/blockquote/pre/code/img/hr/ul/ol/table)
+     intentionally match the original schema so Notion content keeps
+     working; only the visual rules change.
+     --------------------------------------------------------------------- */
+
+  .content h1 {
+    color: var(--color-archive-red);
+    font-size: clamp(1.5rem, 1vw + 1.2rem, 1.9rem);
+    text-align: center;
+    margin: 0.3em 0 0.8em;
+    line-height: 1.1;
+  }
+  /* h2 → portfolio section-heading: small uppercase red */
+  .content h2 {
+    color: var(--color-archive-red);
+    font-size: clamp(1.1rem, 0.3vw + 1rem, 1.25rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 1.2em 0 0.3em;
+  }
+  /* h3 → subordinate section: red, bold, no uppercase */
+  .content h3 {
+    color: var(--color-archive-red);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 1em 0 0.25em;
+  }
+  .content h4 {
+    color: var(--color-archive-ink);
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0.9em 0 0.2em;
+  }
+  .content p { margin: 0 0 0.6em; line-height: 1.45; }
+  .content > p:first-child { margin-top: 0; }
+
+  .content a {
+    border-bottom: none;
+    color: var(--color-archive-link);
+  }
+  .content a:hover { color: var(--color-archive-link-hover); }
+  .content a.bookmark-card,
+  .content a.page-link { border-bottom: none; }
+
   .content blockquote {
-    margin: 1em 0; padding: 0.3em 1em;
-    border-left: 2px solid #c4982e;
-    font-size: 13px; opacity: 0.85; line-height: 1.8;
+    margin: 1.4em 0;
+    padding: 0.4em 1em;
+    border-left: 3px solid var(--color-archive-red);
+    font-style: italic;
+    color: #555;
+    background: #fafafa;
   }
-  .content blockquote ul {
-    list-style: none; padding-left: 0; margin: 0.5em 0 0;
-  }
-  .content blockquote li {
-    padding: 0; font-style: italic; color: rgba(217,201,160,0.5);
-  }
-  .content blockquote li::before {
-    content: '— ';
-  }
+  .content blockquote ul { list-style: none; padding-left: 0; margin: 0.5em 0 0; }
+  .content blockquote li { padding: 0; font-style: italic; color: #777; }
+  .content blockquote li::before { content: '— '; color: var(--color-archive-red); }
+
   .content pre {
-    background: #120e04; border: 1px solid #332710;
-    font-size: 13px; line-height: 1.55; padding: 1em;
-    overflow-x: auto; margin: 1.25em 0;
+    background: #f5f0e6;
+    border: 1px solid var(--color-archive-rule);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    line-height: 1.55;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1.25em 0;
   }
-  .content code { font-family: 'Space Mono', monospace; font-size: 0.9em; }
-  .content p code, .content li code { background: #2a1f0e; padding: 2px 6px; }
+  .content code { font-family: var(--font-mono); font-size: 0.9em; }
+  .content p code, .content li code { background: #f5f0e6; padding: 1px 5px; }
   .content pre code { background: none; padding: 0; font-size: inherit; }
-  .content img { max-width: 100%; height: auto; display: block; margin: 1.25em auto; }
-  .content hr { border: none; border-top: 1px solid rgba(217,201,160,0.12); margin: 2.5em 0; }
-  .content ul, .content ol { line-height: 1.8; padding-left: 1.5em; margin: 0.75em 0; }
-  .content li { padding: 4px 0; }
-  .content table { border-collapse: collapse; width: 100%; margin: 1.25em 0; font-size: 13px; }
-  .content th, .content td { border: 1px solid rgba(217,201,160,0.15); padding: 8px 12px; text-align: left; }
-  .content th { background: #2a1f0e; font-weight: 700; }
+
+  .content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.25em auto;
+  }
+  .content hr {
+    border: none;
+    border-top: 1px solid var(--color-archive-rule);
+    margin: 2em 0;
+  }
+
+  /* Lists — ascii "->" markers on a hanging indent (baseline-aligned with
+     the first text line, doesn't break inline links inside bullets). */
+  .content ul, .content ol {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.4em 0 0.6em;
+  }
+  .content ul li, .content ol li {
+    padding-left: 1.6em;
+    text-indent: -1.6em;
+    margin: 0 0 0.1em;
+    line-height: 1.4;
+  }
+  .content ul li::before {
+    content: "->\00a0\00a0";
+    color: #9a9a9a;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85em;
+    letter-spacing: -0.04em;
+  }
+  .content ol { counter-reset: list-counter; }
+  .content ol li { counter-increment: list-counter; }
+  .content ol li::before {
+    content: counter(list-counter) "."\00a0\00a0;
+    color: #9a9a9a;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85em;
+  }
+
+  /* Navigational entry lists (database index) — exempt from prose markers */
+  .content ul.entries-list,
+  .content ul.entries-list li { padding-left: 0; text-indent: 0; }
+  .content ul.entries-list { margin: 0.4em 0 0.6em; }
+  .content ul.entries-list li {
+    margin: 0 0 0.05em;
+    line-height: 1.35;
+  }
+  .content ul.entries-list li::before { content: none; }
+  .content ul.entries-list li a {
+    font-weight: 700;
+  }
+  .content ul.entries-list li time {
+    color: #888;
+    font-size: 0.8rem;
+    margin-left: 0.6em;
+  }
+
+  /* Bare-link paragraphs (Notion content where a line is just one link) —
+     style as a portfolio-style log entry with the same -> marker. */
+  .content p:has(> a:only-child) {
+    padding-left: 1.6em;
+    text-indent: -1.6em;
+    margin: 0 0 0.1em;
+    line-height: 1.35;
+  }
+  .content p:has(> a:only-child)::before {
+    content: "->\00a0\00a0";
+    color: #9a9a9a;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.85em;
+    letter-spacing: -0.04em;
+  }
+  .content p:has(> a:only-child) > a {
+    font-weight: 700;
+  }
+  /* Keep bookmark-card paragraphs out of the bare-link treatment */
+  .content p:has(> a.bookmark-card) {
+    padding-left: 0;
+    text-indent: 0;
+  }
+  .content p:has(> a.bookmark-card)::before { content: none; }
+
+  .content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.25em 0;
+    font-size: 0.95em;
+  }
+  .content th, .content td {
+    border: 1px solid var(--color-archive-rule);
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .content th { background: #f5f0e6; font-weight: 700; }
+}
+
+@layer components {
+  /* Banner masthead with the skeleton illustration on the left, URL +
+     tagline lines on the right. Mirrors logan.sorese.com's homepage. */
+  .masthead {
+    background: #ffffff;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px 16px 6px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    grid-gap: 14px;
+    align-items: center;
+    border-bottom: 1px solid var(--color-archive-rule);
+  }
+  .masthead-skeleton { width: 160px; height: 200px; }
+  .masthead-skeleton img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+    user-select: none;
+    border: none;
+    margin: 0;
+  }
+  .masthead-text { text-align: center; font-family: var(--font-serif); color: var(--color-archive-ink); }
+  .masthead-url {
+    color: var(--color-archive-red);
+    font-weight: 400;
+    font-size: clamp(1.2rem, 3.6vw, 1.75rem);
+    margin: 0 0 0.35em;
+  }
+  .masthead-url a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: none;
+  }
+  .masthead-url a:hover { color: var(--color-archive-red-dim); }
+  .masthead-tag { font-weight: 700; font-size: 0.95rem; margin: 0 0 0.35em; line-height: 1.2; }
+  .masthead-since {
+    color: var(--color-archive-red);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.3em;
+    text-transform: uppercase;
+  }
+  .masthead-flush { font-weight: 700; font-size: 0.78rem; margin: 0; }
+
+  /* Sub-tagline + hit counter row beneath the masthead */
+  .sub-block {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 6px 16px 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--color-archive-rule);
+  }
+  .sub-wordmark {
+    color: var(--color-archive-red);
+    font-weight: 700;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+  .sub-tagline {
+    font-style: italic;
+    font-size: 0.85rem;
+    margin: 2px 0 0;
+    color: #333;
+    line-height: 1.2;
+  }
+  .hit-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #333;
+  }
+  .hit-counter-num {
+    display: inline-block;
+    background: var(--color-archive-ink);
+    color: #ffd84d;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    padding: 1px 6px;
+    letter-spacing: 0.1em;
+    border: 1px solid #5a4636;
+  }
+  .blink-star {
+    display: inline-block;
+    color: var(--color-archive-red);
+    animation: blink-twinkle 1.2s steps(2, end) infinite;
+  }
+  @keyframes blink-twinkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.3; transform: scale(0.85); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blink-star { animation: none; }
+  }
+
+  /* Slightly fancier gallery card with red title strip below */
+  .content .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin: 0.6em 0 0.8em;
+  }
+  @media (max-width: 768px) {
+    .content .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #cdcdcd;
+    transition: border-color 150ms ease;
+  }
+  .gallery-item:hover { border-color: var(--color-archive-red); }
+  .gallery-item a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border: none;
+  }
+  .gallery-item-img-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background: #f3ead3;
+  }
+  .gallery-item-img-wrap img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    margin: 0 !important;
+    border: none;
+    transition: filter 150ms ease;
+  }
+  .gallery-item:hover .gallery-item-img-wrap img { filter: brightness(1.06); }
+  .gallery-item-caption {
+    background: var(--color-archive-ink);
+    color: #fff;
+    padding: 4px 6px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .gallery-item:hover .gallery-item-caption { background: var(--color-archive-red); }
+
+  @media (max-width: 520px) {
+    .masthead { grid-template-columns: 1fr; padding: 10px; }
+    .masthead-skeleton { width: 120px; height: 150px; margin: 0 auto; }
+  }
+
+  /* Pipe-separated text nav (used by back-link / per-page nav) */
+  .pipe-nav {
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--color-archive-rule);
+  }
+  .pipe-nav a + a::before {
+    content: "|";
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color-archive-ink);
+    margin: 0 0.5em;
+  }
+
+  .colophon {
+    font-size: 0.8rem;
+    color: #555;
+    text-align: center;
+    padding: 14px 12px 28px;
+    border-top: 1px solid var(--color-archive-rule);
+    margin: 22px auto 0;
+    max-width: 600px;
+  }
+
+  .entry-meta { color: var(--color-archive-red); font-weight: 700; }
+
+  /* Bookmark cards (Notion bookmark blocks) — neutral white card, no link
+     paint on the wrapping <a>. */
+  .content a.bookmark-card,
+  .bookmark-card {
+    display: flex;
+    margin: 1.25em 0;
+    border: 1px solid #cdcdcd;
+    background: #ffffff;
+    color: var(--color-archive-ink);
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color 150ms ease;
+  }
+  .bookmark-card:hover,
+  .bookmark-card:focus {
+    border-color: var(--color-archive-link);
+    color: var(--color-archive-ink);
+  }
+  .bookmark-card:visited { color: var(--color-archive-ink); }
+
+  .bookmark-card-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .bookmark-card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-archive-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .bookmark-card-desc {
+    font-size: 0.85rem;
+    color: #555;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .bookmark-card-site {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: auto;
+  }
+  .bookmark-card-img {
+    flex: 0 0 200px;
+    width: 200px;
+    overflow: hidden;
+  }
+  .bookmark-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+    border: none;
+  }
+  @media (max-width: 640px) {
+    .bookmark-card-img { flex-basis: 120px; width: 120px; }
+  }
+  @media (max-width: 480px) {
+    .bookmark-card-img { display: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

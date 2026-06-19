@@ -127,16 +127,16 @@ async function buildBookmarkCard(url, og) {
     if (imgSrc.startsWith('http')) imgSrc = ''
   }
   const imgHtml = imgSrc
-    ? `<div class="w-[200px] md:w-[200px] max-md:w-[120px] max-sm:hidden shrink-0"><img src="${escapeHtml(imgSrc)}" alt="" loading="lazy" class="w-full h-full object-cover block !m-0"></div>`
+    ? `<div class="bookmark-card-img"><img src="${escapeHtml(imgSrc)}" alt="" loading="lazy"></div>`
     : ''
   const desc = og.description
-    ? `<div class="text-xs text-[rgba(217,201,160,0.6)] line-clamp-2">${escapeHtml(og.description.slice(0, 200))}</div>`
+    ? `<div class="bookmark-card-desc">${escapeHtml(og.description.slice(0, 200))}</div>`
     : ''
-  return `<a href="${escapeHtml(url)}" class="bookmark-card flex border border-[rgba(217,201,160,0.15)] my-3 overflow-hidden transition-colors duration-150 hover:border-[#c4982e]" target="_blank" rel="noopener noreferrer">
-  <div class="flex-1 py-3 px-4 min-w-0 flex flex-col gap-1.5">
-    <div class="font-bold text-sm truncate">${escapeHtml(og.title)}</div>
+  return `<a href="${escapeHtml(url)}" class="bookmark-card" target="_blank" rel="noopener noreferrer">
+  <div class="bookmark-card-body">
+    <div class="bookmark-card-title">${escapeHtml(og.title)}</div>
     ${desc}
-    <div class="text-[11px] text-[rgba(217,201,160,0.6)] mt-auto">${escapeHtml(og.siteName || new URL(url).hostname)}</div>
+    <div class="bookmark-card-site">${escapeHtml(og.siteName || new URL(url).hostname)}</div>
   </div>
   ${imgHtml}
 </a>`
@@ -444,7 +444,7 @@ function htmlTemplate(
   { isIndex = false, entries = [], backLink = true } = {}
 ) {
   const nav =
-    backLink && !isIndex ? '<nav class="mb-7"><a href="/" class="text-[rgba(217,201,160,0.6)] border-b border-[#c4982e] hover:text-[#d9c9a0] transition-colors duration-200">&larr; back</a></nav>' : ''
+    backLink && !isIndex ? '<nav class="mb-3"><a href="/">&larr; back</a></nav>' : ''
 
   const hasCoverEntries = entries.some((e) => e.coverLocal)
 
@@ -460,21 +460,21 @@ function htmlTemplate(
               </a>
             </div>`
           }
-          return `<div class="flex items-center p-3 border border-[rgba(217,201,160,0.15)]">
+          return `<div class="flex items-center p-3 border border-[rgba(0,0,0,0.15)]">
             <div>
-              <a href="/${e.slug}.html" class="font-bold block hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a>
-              ${e.date ? `<time class="text-xs text-[rgba(217,201,160,0.6)] block mt-1">${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>` : ''}
+              <a href="/${e.slug}.html" class="font-bold block">${escapeHtml(e.title)}</a>
+              ${e.date ? `<time class="text-xs text-[#666] block mt-1">${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>` : ''}
             </div>
           </div>`
         })
         .join('\n')}
     </div>`
   } else if (entries.length > 0) {
-    entriesHtml = `<ul class="mt-5 list-none p-0 space-y-0.5">
+    entriesHtml = `<ul class="entries-list">
       ${entries
         .map(
           (e) =>
-            `<li><a href="/${e.slug}.html" class="font-bold hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a>${e.date ? `<time class="text-xs text-[rgba(217,201,160,0.6)] ml-3">${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</time>` : ''}</li>`
+            `<li><a href="/${e.slug}.html">${escapeHtml(e.title)}</a>${e.date ? `<time>${new Date(e.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</time>` : ''}</li>`
         )
         .join('\n')}
     </ul>`
@@ -505,21 +505,43 @@ function htmlTemplate(
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
   <style>${CSS}__TAILWIND_CSS__</style>
 </head>
-<body class="bg-[#1c1508] text-[#d9c9a0] font-mono text-sm leading-7 tracking-tight antialiased overflow-x-hidden">
-  <a href="#main-content" class="absolute -top-full left-4 bg-[#c4982e] text-[#1c1508] px-4 py-2 z-[200] font-bold focus:top-2">Skip to content</a>
-  ${!isIndex ? `<header class="sticky top-0 z-[100] bg-[rgba(28,21,8,0.95)] backdrop-blur-2xl backdrop-saturate-[1.8] border-b border-[rgba(217,201,160,0.12)]" role="banner">
-    <div class="max-w-[600px] mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="/" class="font-bold text-sm tracking-tight hover:text-[#c4982e] transition-colors duration-200">Logan, from the Internet.</a>
+<body>
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-3 focus:py-1 focus:border-2 focus:border-black">Skip to content</a>
+
+  <header class="masthead" role="banner">
+    <div class="masthead-skeleton" aria-hidden="true">
+      <img src="/masthead.png" alt="">
     </div>
-  </header>` : ''}
-  <main id="main-content" class="max-w-[600px] mx-auto px-5 max-md:px-[2vw] pt-10 pb-[max(5vh,2rem)]" role="main">
+    <div class="masthead-text">
+      ${isIndex
+        ? `<h1 class="masthead-url"><a href="/">www.loganfromtheinter.net</a></h1>`
+        : `<p class="masthead-url"><a href="/">www.loganfromtheinter.net</a></p>`
+      }
+      <p class="masthead-tag">When Hell is full,<br>the dead will walk the earth</p>
+      <p class="masthead-since">Pure Evil Since 1991</p>
+      <p class="masthead-flush">Flush please</p>
+    </div>
+  </header>
+
+  <div class="sub-block">
+    <p class="sub-wordmark">logan from the inter dot net</p>
+    <p class="sub-tagline">an archive of music, letters, short stories, and the worst things you've ever seen</p>
+  </div>
+
+  <main id="main-content" class="max-w-[600px] mx-auto px-5 max-md:px-[2vw] pt-4 pb-8" role="main">
     ${nav}
     <article class="content">
-      ${!isIndex ? `<h1 class="text-[1.8em] text-center tracking-tight mb-10 leading-snug">${escapeHtml(title)}</h1>` : ''}
+      ${!isIndex ? `<h1>${escapeHtml(title)}</h1>` : ''}
       ${content}
       ${entriesHtml}
     </article>
   </main>
+
+  <footer class="colophon">
+    Licensed under
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener license">CC BY-NC-SA 4.0</a>.
+    Hand-coded. No frameworks were harmed.
+  </footer>
 </body>
 </html>`
 }
@@ -687,13 +709,16 @@ async function build() {
         const withCovers = dbPages.filter((e) => e.coverLocal)
         const withoutCovers = dbPages.filter((e) => !e.coverLocal)
 
-        // Gallery grid for entries with covers
+        // Gallery grid for entries with covers — red-strip caption beneath
         if (withCovers.length > 0) {
-          indexContent += `<div class="grid grid-cols-4 max-md:grid-cols-2 gap-0 mt-8">\n`
+          indexContent += `<div class="gallery-grid">\n`
           for (const e of withCovers) {
-            indexContent += `<div class="relative overflow-hidden group">
-              <a href="/${e.slug}.html" class="block w-full pb-[100%] relative overflow-hidden">
-                <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover transition-all duration-150 group-hover:brightness-110 !m-0">
+            indexContent += `<div class="gallery-item">
+              <a href="/${e.slug}.html">
+                <div class="gallery-item-img-wrap">
+                  <img src="${e.coverLocal}" alt="${escapeHtml(e.title)}" loading="lazy">
+                </div>
+                <div class="gallery-item-caption">${escapeHtml(e.title)}</div>
               </a>
             </div>\n`
           }
@@ -702,18 +727,21 @@ async function build() {
 
         // List for entries without covers
         if (withoutCovers.length > 0) {
-          indexContent += `<ul class="mt-5 list-none p-0 space-y-0.5">\n`
+          indexContent += `<ul class="entries-list">\n`
           for (const e of withoutCovers) {
-            indexContent += `<li><a href="/${e.slug}.html" class="font-bold hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(e.title)}</a></li>\n`
+            indexContent += `<li><a href="/${e.slug}.html">${escapeHtml(e.title)}</a></li>\n`
           }
           indexContent += `</ul>\n`
         }
+
+        indexContent += `<hr>\n`
       }
     } else if (block.type === 'child_page') {
-      // Render as a link
+      // Render as a portfolio-style log entry (bare-link paragraph picks up
+      // the -> marker via .content p:has(> a:only-child) in styles.css)
       const entry = entries.find((e) => e.pageId === block.id)
       if (entry) {
-        indexContent += `<p><a href="/${entry.slug}.html" class="page-link font-bold border-b border-[#c4982e] hover:text-[#c4982e] transition-colors duration-150">${escapeHtml(entry.title)}</a></p>\n`
+        indexContent += `<p><a href="/${entry.slug}.html" class="page-link">${escapeHtml(entry.title)}</a></p>\n`
       }
     } else if (block.type === 'bookmark') {
       // Render bookmark card
