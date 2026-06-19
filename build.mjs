@@ -513,10 +513,7 @@ function htmlTemplate(
       <img src="/masthead.png" alt="">
     </div>
     <div class="masthead-text">
-      ${isIndex
-        ? `<h1 class="masthead-url"><a href="/">www.loganfromtheinter.net</a></h1>`
-        : `<p class="masthead-url"><a href="/">www.loganfromtheinter.net</a></p>`
-      }
+      <p class="masthead-url"><a href="/">www.loganfromtheinter.net</a></p>
       <p class="masthead-tag">When Hell is full,<br>the dead will walk the earth</p>
       <p class="masthead-since">Pure Evil Since 1991</p>
       <p class="masthead-flush">Flush please</p>
