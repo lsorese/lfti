@@ -158,31 +158,37 @@
      the first text line, doesn't break inline links inside bullets). */
   .content ul, .content ol {
     list-style: none;
-    padding-left: 1.5em;
+    padding-left: 2.5em;
     margin: 0.4em 0 0.6em;
   }
   .content ul li, .content ol li {
-    padding-left: 1.6em;
-    text-indent: -1.6em;
-    margin: 0 0 0.1em;
-    line-height: 1.4;
+    position: relative;
+    padding-left: 0;
+    text-indent: 0;
+    margin: 0 0 0.15em;
+    line-height: 1.45;
   }
   .content ul li::before {
-    content: "-\00a0\00a0";
+    content: "-";
+    position: absolute;
+    left: -1em;
+    top: 0;
+    line-height: inherit;
     color: #9a9a9a;
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: 0.85em;
-    letter-spacing: -0.04em;
   }
   .content ol { counter-reset: list-counter; }
   .content ol li { counter-increment: list-counter; }
   .content ol li::before {
-    content: counter(list-counter) "."\00a0\00a0;
+    content: counter(list-counter) ".";
+    position: absolute;
+    left: -1.6em;
+    top: 0;
+    line-height: inherit;
     color: #9a9a9a;
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: 0.85em;
   }
 
   /* Navigational entry lists (database index) — exempt from prose markers */
@@ -206,18 +212,21 @@
   /* Bare-link paragraphs (Notion content where a line is just one link) —
      style as a portfolio-style log entry with the same -> marker. */
   .content p:has(> a:only-child) {
-    padding-left: 1.6em;
-    text-indent: -1.6em;
-    margin: 0 0 0.1em 1.5em;
-    line-height: 1.35;
+    position: relative;
+    padding-left: 1em;
+    text-indent: 0;
+    margin: 0 0 0.15em 1.5em;
+    line-height: 1.45;
   }
   .content p:has(> a:only-child)::before {
-    content: "-\00a0\00a0";
+    content: "-";
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: inherit;
     color: #9a9a9a;
     font-family: var(--font-mono);
     font-weight: 700;
-    font-size: 0.85em;
-    letter-spacing: -0.04em;
   }
   .content p:has(> a:only-child) > a {
     font-weight: 700;
