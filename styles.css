@@ -164,7 +164,7 @@
     line-height: 1.4;
   }
   .content ul li::before {
-    content: "->\00a0\00a0";
+    content: "-\00a0\00a0";
     color: #9a9a9a;
     font-family: var(--font-mono);
     font-weight: 700;
@@ -208,7 +208,7 @@
     line-height: 1.35;
   }
   .content p:has(> a:only-child)::before {
-    content: "->\00a0\00a0";
+    content: "-\00a0\00a0";
     color: #9a9a9a;
     font-family: var(--font-mono);
     font-weight: 700;
