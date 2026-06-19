@@ -211,14 +211,17 @@
 
   /* Bare-link paragraphs (Notion content where a line is just one link) —
      style as a portfolio-style log entry with the same -> marker. */
-  .content p:has(> a:only-child) {
+  /* Paragraphs that are a single page-link (from build.mjs child_page
+     renderer only) get portfolio-style log-entry markup. Scoped by class
+     so prose with inline links is left alone. */
+  .content p:has(> a.page-link) {
     position: relative;
     padding-left: 1em;
     text-indent: 0;
     margin: 0 0 0.15em 1.5em;
     line-height: 1.45;
   }
-  .content p:has(> a:only-child)::before {
+  .content p:has(> a.page-link)::before {
     content: "-";
     position: absolute;
     left: 0;
@@ -228,15 +231,7 @@
     font-family: var(--font-mono);
     font-weight: 700;
   }
-  .content p:has(> a:only-child) > a {
-    font-weight: 700;
-  }
-  /* Keep bookmark-card paragraphs out of the bare-link treatment */
-  .content p:has(> a.bookmark-card) {
-    padding-left: 0;
-    text-indent: 0;
-  }
-  .content p:has(> a.bookmark-card)::before { content: none; }
+  .content p:has(> a.page-link) > a { font-weight: 700; }
 
   .content table {
     border-collapse: collapse;
