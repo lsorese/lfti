@@ -525,7 +525,7 @@ function htmlTemplate(
     <p class="sub-tagline">an archive of music, letters, short stories, and the worst things you've ever seen</p>
   </div>
 
-  <main id="main-content" class="max-w-[600px] mx-auto px-5 max-md:px-[2vw] pt-4 pb-8" role="main">
+  <main id="main-content" class="max-w-[680px] mx-auto px-5 max-md:px-[2vw] pt-4 pb-8" role="main">
     ${nav}
     <article class="content">
       ${!isIndex ? `<h1>${escapeHtml(title)}</h1>` : ''}

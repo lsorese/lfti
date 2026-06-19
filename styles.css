@@ -257,7 +257,7 @@
      tagline lines on the right. Mirrors logan.sorese.com's homepage. */
   .masthead {
     background: #ffffff;
-    max-width: 600px;
+    max-width: 680px;
     margin: 0 auto;
     padding: 10px 16px 6px;
     display: grid;
@@ -303,7 +303,7 @@
 
   /* Sub-tagline + hit counter row beneath the masthead */
   .sub-block {
-    max-width: 600px;
+    max-width: 680px;
     margin: 0 auto;
     padding: 6px 16px 8px;
     text-align: center;
@@ -437,7 +437,7 @@
     padding: 14px 12px 28px;
     border-top: 1px solid var(--color-archive-rule);
     margin: 22px auto 0;
-    max-width: 600px;
+    max-width: 680px;
   }
 
   .entry-meta { color: var(--color-archive-red); font-weight: 700; }
