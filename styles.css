@@ -117,12 +117,10 @@
   .content a.page-link { border-bottom: none; }
 
   .content blockquote {
-    margin: 1.4em 0;
-    padding: 0.4em 1em;
-    border-left: 3px solid var(--color-archive-red);
-    font-style: italic;
-    color: #555;
-    background: #fafafa;
+    margin: 1em 0;
+    padding: 0.1em 0 0.1em 1em;
+    border-left: 2px solid var(--color-archive-rule);
+    color: var(--color-archive-ink);
   }
   .content blockquote ul { list-style: none; padding-left: 0; margin: 0.5em 0 0; }
   .content blockquote li { padding: 0; font-style: italic; color: #777; }
