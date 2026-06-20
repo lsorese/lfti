@@ -527,7 +527,7 @@ function htmlTemplate(
 
   <main id="main-content" class="max-w-[680px] mx-auto px-5 max-md:px-[2vw] pt-4 pb-8" role="main">
     ${nav}
-    <article class="content">
+    <article class="content${isIndex ? ' content-index' : ''}">
       ${!isIndex ? `<h1>${escapeHtml(title)}</h1>` : ''}
       ${content}
       ${entriesHtml}

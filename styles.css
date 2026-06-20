@@ -189,6 +189,16 @@
     font-weight: 700;
   }
 
+  /* Homepage lists styled like entries-list — bold links, no dash marker */
+  .content-index ul,
+  .content-index ul li {
+    padding-left: 0;
+    text-indent: 0;
+  }
+  .content-index ul li { margin: 0 0 0.05em; line-height: 1.35; }
+  .content-index ul li::before { content: none; }
+  .content-index ul li a { font-weight: 700; }
+
   /* Navigational entry lists (database index) — exempt from prose markers */
   .content ul.entries-list,
   .content ul.entries-list li { padding-left: 0; text-indent: 0; }
